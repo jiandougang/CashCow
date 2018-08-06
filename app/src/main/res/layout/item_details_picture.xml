@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.drawee.view.SimpleDraweeView
+    android:id="@+id/sdv_pic"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp"
+    android:scaleType="fitXY"
+    app:placeholderImage="@mipmap/bg_big_placeholder_pic"
+    app:placeholderImageScaleType="fitXY"
+    android:layout_height="220dp"
+    android:layout_marginBottom="35dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto" />

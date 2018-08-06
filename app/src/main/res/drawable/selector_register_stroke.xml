@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item  android:state_pressed="false">
+        <shape android:shape="rectangle">
+            <!--设置渐变色-->
+
+            <!--设置上面两个角的弧度-->
+            <corners android:radius="1000dp"/>
+
+            <solid android:color="#FFFFFF" />
+
+            <stroke
+                android:width="1dp"
+                android:color="#FE7508" />
+        </shape>
+
+    </item >
+    <item  android:state_pressed="true">
+        <shape android:shape="rectangle">
+
+            <solid android:color="#FF9108"/>
+            <!--设置上面两个角的弧度-->
+            <corners android:radius="1000dp"/>
+        </shape>
+    </item >
+
+    <item  android:state_enabled="false">
+        <shape>
+            <solid android:color="#E4E4E4"/>
+            <!--设置上面两个角的弧度-->
+            <corners android:radius="1000dp"/>
+        </shape>
+    </item >
+</selector>

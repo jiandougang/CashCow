@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    //自定义折叠 TextView
+    <declare-styleable name="ExpandableTextView">
+        <attr name="maxCollapsedLines" format="integer" />
+        <attr name="animDuration" format="integer" />
+        <attr name="animAlphaStart" format="float" />
+        <attr name="expandDrawable" format="reference" />
+        <attr name="collapseDrawable" format="reference" />
+    </declare-styleable>
+
+    //自定义导航栏
+    <declare-styleable name="NavigationBar">
+        <attr name="navigationBarRightDrawable" format="reference" />
+        <attr name="navigationBarRightText" format="string|reference" />
+        <attr name="navigationBarTitle" format="string|reference" />
+        <attr name="navigationBarRightTextColor" format="color" />
+    </declare-styleable>
+
+    //自定义验证码输入框
+    <declare-styleable name="VerificationCodeFrame">
+        <attr name="backgroundColor" format="color" />
+        <attr name="focusedColor" format="color" />
+        <attr name="unFocusedColor" format="color" />
+        <attr name="textColor" format="color" />
+        <attr name="lineCount" format="integer" />
+        <attr name="lightLineWidth" format="dimension" />
+        <attr name="verticalLineSpace" format="dimension" />
+        <attr name="fineTuning" format="integer" />
+    </declare-styleable>
+
+
+    <!--HProgressBarLoading-->
+    <declare-styleable name="hprogress">
+        <attr name="progress" format="integer" />
+        <attr name="max" format="integer" />
+        <attr name="progressHeight" format="integer" />
+        <attr name="progressColor" format="color" />
+    </declare-styleable>
+
+    <!--验证码的属性-->
+    <declare-styleable name="VerificationCodeEditText">
+        <attr name="figures" format="integer" />
+        <attr name="verCodeMargin" format="dimension" />
+        <attr name="bottomLineSelectedColor" format="reference" />
+        <attr name="bottomLineNormalColor" format="reference" />
+        <attr name="bottomLineHeight" format="dimension" />
+        <attr name="selectedBackgroundColor" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="TagFlowLayout">
+        <attr name="max_select" format="integer"/>
+        <attr name="tag_gravity">
+            <enum name="left" value="-1" />
+            <enum name="center" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+    </declare-styleable>
+
+</resources>

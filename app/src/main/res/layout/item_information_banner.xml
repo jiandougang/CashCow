@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_app"
+    android:layout_width="match_parent"
+    android:layout_height="187dp"
+    android:layout_marginBottom="20dp"
+    android:background="@color/white">
+
+    <com.donkingliang.banner.CustomBanner
+        android:id="@+id/cb_banner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:indicatorGravity="CENTER"
+        app:indicatorSelectRes="@drawable/shape_dots_select"
+        app:indicatorUnSelectRes="@drawable/shape_dots_default"
+        app:indicatorStyle="ORDINARY" />
+
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sd_single_banner_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:placeholderImage="@mipmap/bg_big_placeholder_pic" />
+
+</android.support.constraint.ConstraintLayout>

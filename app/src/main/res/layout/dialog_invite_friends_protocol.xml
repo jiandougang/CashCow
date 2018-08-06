@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearLayout3"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_dialog_corner_white_bg">
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout13"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_cancel"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/invite_friends_icon_cancel" />
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:text="奖励规则"
+            android:textColor="#ff000000"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view23"
+            android:layout_width="0dp"
+            android:background="#ffefefef"
+            android:layout_height="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout13"
+        app:layout_constraintVertical_bias="1.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/textView77"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="16dp"
+                android:text=" 点击邀请好友即默认为您已阅读并同意《邀请注册协议》。为保障您的合法权益，请在参与邀请注册活动之前，仔细阅读本协议。当您邀请好友注册时，默认您已知悉如下条款：\n
+    1、 活动内容\n
+    邀请好友注册，好友根据广州摇钱树科技有限公司（摇钱树）平台要求完成注册，即可享得摇钱树平台的相关收益，邀请者也相应获得相关收益奖励。\n
+    2、参与方式\n
+    用户通过摇钱树平台提供的分享路径邀请好友注册，受邀者在邀请链接中输入注册手机号（微信号或QQ）等相关资料并接受实名提交，即成功完成一次邀请。\n
+    3、注意事项\n
+    a. 每位用户的邀请次数无上限。\n
+    b. 受邀者需从未下单使用摇钱树平台，每位用户最多可获得一次受邀。\n
+    c. 邀请关系以受邀者第一次提交注册手机号或微信号、QQ信息为准，邀请关系不可转移和解除。\n
+    d. 拥有相同账户、手机号微信号、QQ及设备的用户视为同一用户，该规则适用于邀请者与被邀请者。\n
+    e. 用户可在摇钱树平台［我的］中查看获得的奖励。奖励所得每满200元，即可提现或用于平台购物。\n
+    f .平台禁止任何用户使用我们的平台从事涉及“黄赌毒”等违法活动，否则后果自负；若给摇钱树平台造成损失（包括但不限于平台经济损失、声誉受损等），摇钱树平台有权利追讨该得的权益；\n
+    4、特别声明\n
+    我们包含邀请注册在内的平台收益仅向正当、合法使用我们摇钱树平台的用户。每位参与者（含邀请人及被邀请人）的摇钱树平台账号、手机号、微信号、QQ及其他身份认证信息必须是唯一的，任何信息与其他用户重合都不能获得摇钱树平台认可（包括收益）。一旦发现您存在利用我们的规则漏洞进行任何形式的作弊行为（包括但不限于通过我们的规则漏洞获得不正当的经济利益），我们有权取消与作弊行为相关账户的奖励、追回您作弊所得的不正当经济利益、关闭作弊账户或与您相关的所有账户，并保留取消您后续使用我们摇钱树平台的权利，必要时会依据严重程度追究您的法律责任。\n
+
+    六、赚取收益规则\n
+    平台实行三级分销功能；A为第一级，A看（或点击或下载或复制微信号）广告则占此条广告每次收益的60%；A邀请B进平台，则B为第二级，B看（或点击或下载或复制微信号）广告则B占此条广告每次收益的60%，A则自动分得此条广告每次收益的30%；B邀请C进平台，则C为第三级，C看（或点击或下载或复制微信号）广告则占此条广告每次收益的60%，B则自动分得此条广告每次收益的30%，A则自动分得此条广告每次收益的10%；\n
+
+    七、其他\n
+    1、摇钱树郑重提醒用户注意本协议中免除摇钱树责任和限制用户权利的条款，请用户仔细阅读，自主考虑风险。未成年人应在法定监护人的陪同下阅读本协议。\n
+    2、本协议的效力、解释及纠纷的解决，适用于中华人民共和国法律。若用户和摇钱树之间发生任何纠纷或争议，首先应友好协商解决，协商不成的，用户同意将纠纷或争议提交摇钱树住所地有管辖权的人民法院管辖。\n
+    3、本协议的任何条款无论因何种原因无效或不具可执行性，其余条款仍有效，对双方具有约束力。\n
+    4、本协议最终解释权归摇钱树所有，据广州摇钱树科技有限公司免责条款特此声明：该应用注册及隐私协议与苹果（安卓）公司无关。\n
+    "
+                android:textColor="#ff333333"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout13" />
+        </LinearLayout>
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>
