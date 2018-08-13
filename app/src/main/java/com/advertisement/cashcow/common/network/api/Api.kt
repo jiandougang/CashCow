@@ -2,10 +2,7 @@ package com.advertisement.cashcow.common.network.api
 
 import com.advertisement.cashcow.common.network.bean.LoginByPasswordApiBean
 import com.advertisement.cashcow.common.network.bean.TextApiBean
-import com.advertisement.cashcow.common.network.bean.mine.CumulativeApiBean
-import com.advertisement.cashcow.common.network.bean.mine.MineApiBean
-import com.advertisement.cashcow.common.network.bean.mine.ModifyPasswordApiBean
-import com.advertisement.cashcow.common.network.bean.mine.MyBankCardBindingApiBean
+import com.advertisement.cashcow.common.network.bean.mine.*
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -31,7 +28,12 @@ interface Api {
         var requestIsOk = "requestIsOk"
         var requestResetDealPwd = "requestResetDealPwd"
         var requestBindBandCard = "requestBindBandCard"
+        var requestGetRedPkts = "requestGetRedPkts"
+        var requestCountPktByUserId = "requestCountPktByUserId"
 
+
+        /**每一页展示多少条数据 */
+        val REQUEST_COUNT = 10
 
         /**
          * 1:表示申请注册
@@ -174,5 +176,26 @@ interface Api {
      */
     @POST("member/saveBasicInfo.do")
     fun requestSaveBasicInfo(@QueryMap maps: Map<String, String>): Observable<LoginByPasswordApiBean>
+
+
+    /**
+     * 领取红包（金币）列表
+     *
+     * @param userid 用户id
+     * @param page 当前页
+     * @param rows 页大小
+     * @param status 状态 1、2、3分别对应审核中、已通过、未通过3个状态数据
+     */
+
+    @GET("uop/getRedPkts.do")
+    fun requestGetRedPkts(@QueryMap maps: Map<String, String>): Observable<GoldCoinsDetailApiBean>
+
+    /**
+     * 分类(金币)统计红包
+     *
+     * @param userid 用户id
+     */
+    @GET("uop/countPktByUserId.do")
+    fun requestCountPktByUserId(@QueryMap maps: Map<String, String>): Observable<GoldCoinsDetailStatisticsApiBean>
 
 }

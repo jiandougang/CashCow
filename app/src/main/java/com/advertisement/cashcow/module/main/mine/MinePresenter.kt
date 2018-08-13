@@ -276,7 +276,7 @@ class MinePresenter : BasePresenter<MineContract.View>(), MineContract.Presenter
         msg.title = "摇钱树"
         msg.description = "摇钱树，一个可以帮你赚钱的平台"
 
-        val  thumb = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launch_wechat),300,300,true)
+        val  thumb = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launch_wechat),256,256,true)
         msg.thumbData = ConvertUtils.bitmap2Bytes(thumb, Bitmap.CompressFormat.JPEG)
 
         val req = SendMessageToWX.Req()

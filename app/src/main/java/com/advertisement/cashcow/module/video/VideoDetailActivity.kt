@@ -2,6 +2,7 @@ package com.advertisement.cashcow.module.video
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
@@ -15,13 +16,18 @@ import android.view.WindowManager
 import android.widget.TextView
 import com.advertisement.cashcow.R
 import com.advertisement.cashcow.common.base.BaseActivity
+import com.advertisement.cashcow.common.broadcast.NormalBroadcastReceiver
 import com.advertisement.cashcow.common.manager.EmptyActivity
 import com.advertisement.cashcow.common.network.api.DetailsApi
 import com.advertisement.cashcow.common.network.bean.DetailsApiBean
 import com.advertisement.cashcow.common.network.bean.LoginByPasswordApiBean
 import com.advertisement.cashcow.module.login.password.LoginByPasswordFragment
-import com.advertisement.cashcow.module.main.detail.*
+import com.advertisement.cashcow.module.main.detail.DetailsAdapter
+import com.advertisement.cashcow.module.main.detail.DetailsBean
+import com.advertisement.cashcow.module.main.detail.DetailsContract
+import com.advertisement.cashcow.module.main.detail.DetailsPresenter
 import com.advertisement.cashcow.module.main.information.InformationBean
+import com.advertisement.cashcow.module.web.BasicWebActivity
 import com.advertisement.cashcow.thirdLibs.avplayer.cover.ControllerCover
 import com.advertisement.cashcow.thirdLibs.avplayer.play.DataInter
 import com.advertisement.cashcow.util.CacheConfigUtils
@@ -51,8 +57,10 @@ class VideoDetailActivity : BaseActivity(), DetailsContract.View {
     private var receiverGroup: ReceiverGroup? = null
     private var isLandscape: Boolean = false
     private var advertisementId: String? = null
+    private var advertisementCoins = 0
 
     private val mPresenter by lazy { DetailsPresenter(VideoDetailActivity.javaClass.name) }
+    private var normalBroadcastReceiver: NormalBroadcastReceiver? = null
 
     private var detailsAdapter: DetailsAdapter? = null
 
@@ -73,9 +81,10 @@ class VideoDetailActivity : BaseActivity(), DetailsContract.View {
 
     companion object {
         const val InformationBean_Type = "DetailsFragment_Type"
-        const val InformationBean_Advertisement_Id = "DetailsFragment_Advertisement_Id"
+        const val InformationBean_Advertisement_Id = "DetailsFragment_Advertisement_Id"//广告id
+        const val InformationBean_Advertisement_Coins = "InformationBean_Advertisement_Coins"//金币数
 
-        const val REQ_CODE = 666
+        const val REQ_COLLECTION_CODE = 666
 
     }
 
@@ -111,10 +120,27 @@ class VideoDetailActivity : BaseActivity(), DetailsContract.View {
         arrayData = ArrayList()
         mPresenter.attachView(this)
         advertisementId = intent.getStringExtra(InformationBean_Advertisement_Id)
+
+
         userInfo = CacheConfigUtils.parseUserInfo(this)
         mPresenter.requestGetContentById(this.advertisementId.toString(), userInfo?.resultData?.id.toString())
 
+        userInfo = CacheConfigUtils.parseUserInfo(this)
 
+
+
+        normalBroadcastReceiver = NormalBroadcastReceiver(object : NormalBroadcastReceiver.ReceiverCallBack {
+            override fun callBack(intent: Intent) {
+                userInfo = CacheConfigUtils.parseUserInfo(this@VideoDetailActivity)
+                mPresenter.requestIsReceived(this@VideoDetailActivity, userInfo?.resultData?.id,
+                        advertisementId.toString(), advertisementCoins,supportFragmentManager) {
+                }
+            }
+        })
+
+        val filter = IntentFilter()
+        filter.addAction(NormalBroadcastReceiver.BroadcastName)
+        registerReceiver(normalBroadcastReceiver, filter)
     }
 
     override fun initView() {
@@ -164,8 +190,6 @@ class VideoDetailActivity : BaseActivity(), DetailsContract.View {
         videoView.setEventHandler(mOnEventAssistHandler)
 
 
-
-
         nv_bar.let {
             it.setOnBackClickListener {
                 finish()
@@ -184,7 +208,7 @@ class VideoDetailActivity : BaseActivity(), DetailsContract.View {
                         intent.putExtra(EmptyActivity.Activity_Key, LoginByPasswordFragment.javaClass.name)
                         intent.putExtra(LoginByPasswordFragment.Finish_Activity_For_Result, LoginByPasswordFragment.Finish_Activity_For_Result)
 
-                        startActivityForResult(intent, REQ_CODE)
+                        startActivityForResult(intent, REQ_COLLECTION_CODE)
                         overridePendingTransition(R.anim.activity_slide_enter_left, R.anim.activity_slide_enter_left)
 
                     }
@@ -204,9 +228,13 @@ class VideoDetailActivity : BaseActivity(), DetailsContract.View {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == DetailsFragment.REQ_COLLECTION_CODE && resultCode == SupportFragment.RESULT_OK) {
+        if (resultCode == SupportFragment.RESULT_OK) {
             userInfo = CacheConfigUtils.parseUserInfo(this)
-            mPresenter.requestStoreAd((userInfo as LoginByPasswordApiBean).resultData?.id!!, advertisementId!!)
+            when (requestCode) {
+                VideoDetailActivity.REQ_COLLECTION_CODE -> {
+                    mPresenter.requestStoreAd((userInfo as LoginByPasswordApiBean).resultData?.id!!, advertisementId!!)
+                }
+            }
         }
     }
 
@@ -222,6 +250,10 @@ class VideoDetailActivity : BaseActivity(), DetailsContract.View {
 
     public override fun onDestroy() {
         super.onDestroy()
+        if (normalBroadcastReceiver != null) {
+            unregisterReceiver(normalBroadcastReceiver)
+            normalBroadcastReceiver = null
+        }
         videoView.stopPlayback()
     }
 
@@ -281,6 +313,15 @@ class VideoDetailActivity : BaseActivity(), DetailsContract.View {
             DetailsApi.requestGetContentById -> {
                 val detailsBean = obj as DetailsApiBean
                 tv_app_name.text = detailsBean.appname
+                iv_down_load.setOnClickListener {
+                    val intent = Intent(this, BasicWebActivity::class.java)
+                    intent.putExtra(BasicWebActivity.LoadURL, detailsBean.appaddr)
+                    intent.putExtra(BasicWebActivity.AdvertisementId, detailsBean.id)
+
+                    startActivity(intent)
+                    overridePendingTransition(R.anim.activity_slide_enter_left, R.anim.activity_slide_enter_left)
+
+                }
 
                 detailsAdapter?.addAll(mPresenter.parseAdData(detailsBean))
 
@@ -299,6 +340,17 @@ class VideoDetailActivity : BaseActivity(), DetailsContract.View {
                     mPresenter.requestViewEvent(this, userInfo?.resultData?.id.toString(), advertisementId!!, detailsBean.adsc)
                 }
 
+                if (detailsBean.gold > 0) {
+                    mPresenter.requestIsReceived(this@VideoDetailActivity, userInfo?.resultData?.id, advertisementId.toString(), detailsBean.gold,supportFragmentManager) {
+                        val intent = Intent(this, EmptyActivity::class.java)
+                        intent.putExtra(EmptyActivity.Activity_Key, LoginByPasswordFragment.javaClass.name)
+                        intent.putExtra(LoginByPasswordFragment.Finish_Activity_For_Result, LoginByPasswordFragment.Finish_Activity_For_Result)
+
+                        overridePendingTransition(R.anim.activity_slide_enter_left, R.anim.activity_slide_enter_left)
+                    }
+                }
+
+                advertisementCoins = detailsBean.gold
                 collectionStars = detailsBean.storenum
                 collectionStatus = detailsBean.storestatus.toString()
             }
@@ -317,6 +369,7 @@ class VideoDetailActivity : BaseActivity(), DetailsContract.View {
                 ToastUtils.showShort("取消收藏")
 
             }
+
         }
     }
 

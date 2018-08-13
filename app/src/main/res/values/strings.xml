@@ -140,6 +140,8 @@
     <string name="to_withdraw">去提现</string>
     <string name="phone_with_colon">手机：</string>
     <string name="today_earnings">今日收益（元）</string>
+    <string name="coin_count">金币（个）</string>
+
     <string name="nick_name">昵称</string>
     <string name="name">姓名</string>
     <string name="password_management">密码管理</string>
@@ -200,7 +202,9 @@
     <string name="Call">呼叫</string>
     <string name="tab_again_exit_app">再按一次退出程序</string>
     <string name="more_benefit_are_waiting_for">更多福利等你来</string>
-    <string name="got_it">我知道拉</string>
+    <string name="got_it">我知道了</string>
+    <string name="gold_coin_detail">金币明细</string>
+    <string name="get_coins">领取金币</string>
 
 
 </resources>

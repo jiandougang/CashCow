@@ -76,7 +76,15 @@ interface InformationContract {
          */
         fun requestClickEvent(context: Context, userId: String, adId: String)
 
+        /**
+         * 安卓app版本更新接口
+         */
+        fun requestGetLastedVersion(context: Context)
 
+        /**
+         * 下载最新版本App
+         */
+        fun dowonLoadLatestVersion()
         /**
          * 解析标题子段，用于后台访问接口
          **/

@@ -2,6 +2,7 @@ package com.advertisement.cashcow.config
 
 import android.app.Application
 import android.os.StrictMode
+import com.advertisement.cashcow.thirdLibs.rxretrofitlibrary.retrofit_rx.RxRetrofitApp
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.Utils
@@ -38,9 +39,7 @@ object UtilsConfig {
 //        PlayerConfig.setDefaultPlanId(defaultPlanId)
         PlayerLibrary.init(context)
 
-
         Fresco.initialize(context)
-
 
         Utils.init(context)
 
@@ -55,6 +54,7 @@ object UtilsConfig {
                     // Bugtags.sendException(e);
                 }
                 .install()
+        RxRetrofitApp.init(context,true)
 
 
         val logConfig = LogUtils.getConfig()

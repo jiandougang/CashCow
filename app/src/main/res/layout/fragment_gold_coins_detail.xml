@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F6F7F9">
+
+    <com.advertisement.cashcow.widget.NavigationBar
+        android:id="@+id/nv_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:navigationBarRightDrawable="@mipmap/gold_coin_detail_hint"
+        app:navigationBarTitle="@string/gold_coin_detail">
+
+    </com.advertisement.cashcow.widget.NavigationBar>
+
+    <com.flyco.tablayout.SlidingTabLayout
+        android:id="@+id/ctl_coins_state"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nv_bar"
+        app:tl_indicator_color="#FF9108"
+        app:tl_indicator_height="2dp"
+        app:tl_indicator_width_equal_title="true"
+        app:tl_tab_space_equal="true"
+        app:tl_textsize="17sp"
+        app:tl_textSelectColor="#FF9108"
+        app:tl_textUnselectColor="#333333"
+        app:tl_underline_color="#F6F7F9"
+        app:tl_underline_height="2dp" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_coins_state"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ctl_coins_state" />
+
+</android.support.constraint.ConstraintLayout>

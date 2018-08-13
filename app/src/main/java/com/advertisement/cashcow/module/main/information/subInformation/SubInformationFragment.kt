@@ -120,22 +120,7 @@ open class SubInformationFragment : InformationFragment(), InformationContract.V
                 val informationApi = obj as InformationAdApiBean
                 informationAdapter?.addAll(mSubInformationPresenter.parseAdData(informationApi.rows))
 
-                when (title) {
-                    "贷款" -> {
-                        NiceDialog.init()
-                                .setLayoutId(R.layout.dialog_reward_tips)
-                                .setConvertListener(object : ViewConvertListener() {
-                                    @SuppressLint("SetTextI18n")
-                                    public override fun convertView(holder: com.othershe.nicedialog.ViewHolder, dialog: BaseNiceDialog) {
-                                        holder.getView<TextView>(R.id.tv_got_it).setOnClickListener {
-                                            dialog.dismiss()
-                                        }
-                                    }
-                                })
-                                .setMargin(45)
-                                .show(fragmentManager)
-                    }
-                }
+
 
                 if (informationApi.pageNo == informationApi.pages) {
                     rv_information.setLoadMoreEnabled(false)

@@ -14,6 +14,7 @@ import com.advertisement.cashcow.common.manager.EmptyActivity
 import com.advertisement.cashcow.module.login.password.LoginByPasswordFragment
 import com.advertisement.cashcow.module.main.information.subInformation.SubInformationFragment
 import com.advertisement.cashcow.module.main.mine.cumulativeIncome.CumulativeIncomeFragment
+import com.advertisement.cashcow.module.main.mine.goldCoinsDetail.GoldCoinsDetailFragment
 import com.advertisement.cashcow.module.main.mine.myBankCard.MyBankCardsFragment
 import com.advertisement.cashcow.module.main.mine.myCollection.MyCollectionFragment
 import com.advertisement.cashcow.module.main.mine.other.CustomerServiceFragment
@@ -83,6 +84,7 @@ class MineFragment : BaseFragment(), View.OnClickListener, MineContract.View {
         cl_my_collection.setOnClickListener(this)
         cl_customer_service.setOnClickListener(this)
         cl_my_band_cards.setOnClickListener(this)
+        cl_coins_count.setOnClickListener(this)
         cl_withdraw.setOnClickListener(this)
         cl_business_cooperation.setOnClickListener(this)
     }
@@ -211,6 +213,20 @@ class MineFragment : BaseFragment(), View.OnClickListener, MineContract.View {
                         })
                         .setMargin(52)
                         .show(fragmentManager)
+            }
+
+            v?.id == R.id.cl_coins_count -> {
+                val intent = Intent(activity, EmptyActivity::class.java)
+
+                if (CacheConfigUtils.parseUserInfo(context!!).resultData != null) {
+                    intent.putExtra(EmptyActivity.Activity_Key, GoldCoinsDetailFragment.javaClass.name)
+                } else {
+                    intent.putExtra(LoginByPasswordFragment.Finish_Activity_For_Result, LoginByPasswordFragment.Finish_Activity_For_Result)
+                    intent.putExtra(EmptyActivity.Activity_Key, LoginByPasswordFragment.javaClass.name)
+                }
+
+                activity!!.startActivity(intent)
+                activity!!.overridePendingTransition(R.anim.activity_slide_enter_left, R.anim.activity_slide_enter_left)
             }
 
         }

@@ -93,7 +93,8 @@ class InformationBean(var type: String) {
      */
     data class AdvertisementSinglePicEntity(val id: String?, val text: String?,
                                             val publisher: String?, val releaseTime: String?,
-                                            val picPath: String?, val linkUrl: String?,var adsc:Int)
+                                            val picPath: String?, val linkUrl: String?,
+                                            var adsc:Int,var gold:Int)
 
 
     /**
@@ -108,7 +109,8 @@ class InformationBean(var type: String) {
      */
     data class AdvertisementMultiPicEntity(val id: String?, val text: String?,
                                            val publisher: String?, val releaseTime: String?,
-                                           val picPathList: ArrayList<String>, val linkUrl: String?,var adsc:Int)
+                                           val picPathList: ArrayList<String>, val linkUrl: String?,
+                                           var adsc:Int,var gold:Int)
 
     /**
      * 描述：下载App数据实体
@@ -124,7 +126,7 @@ class InformationBean(var type: String) {
     data class VideoEntity(val id: String?, val text: String?,
                            val thumbPic: String?, val publisher: String?,
                            val releaseTime: String?,val linkUrl: String?, val appUrl: String?,
-                           var adsc:Int)
+                           var adsc:Int,var gold:Int)
 
 
 }

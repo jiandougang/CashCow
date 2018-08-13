@@ -1,18 +1,22 @@
 package com.advertisement.cashcow.module.main.detail
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.TextView
 import com.advertisement.cashcow.R
+import com.advertisement.cashcow.common.base.BaseActivity
 import com.advertisement.cashcow.common.base.BaseFragment
+import com.advertisement.cashcow.common.manager.EmptyActivity
 import com.advertisement.cashcow.common.network.api.DetailsApi
 import com.advertisement.cashcow.common.network.bean.DetailsApiBean
 import com.advertisement.cashcow.common.network.bean.LoginByPasswordApiBean
 import com.advertisement.cashcow.module.login.password.LoginByPasswordFragment
 import com.advertisement.cashcow.module.main.information.InformationBean
+import com.advertisement.cashcow.module.web.BasicWebActivity
 import com.advertisement.cashcow.util.CacheConfigUtils
 import com.advertisement.cashcow.util.ClipboardUtils
 import com.blankj.utilcode.util.ToastUtils
@@ -31,6 +35,7 @@ class DetailsFragment : BaseFragment(), View.OnClickListener, DetailsContract.Vi
 
     private var type: String? = null
     private var advertisementId: String? = null
+    private var advertisementCoins = 0
 
     private val mPresenter by lazy { DetailsPresenter(DetailsFragment.javaClass.name) }
 
@@ -52,6 +57,8 @@ class DetailsFragment : BaseFragment(), View.OnClickListener, DetailsContract.Vi
 
     companion object {
         const val REQ_COLLECTION_CODE = 666
+        const val REQ_GET_COINS_CODE = 667
+
 
         fun getInstance(type: String, advertisementId: String): DetailsFragment {
             val fragment = DetailsFragment()
@@ -131,6 +138,10 @@ class DetailsFragment : BaseFragment(), View.OnClickListener, DetailsContract.Vi
                 REQ_COLLECTION_CODE -> {
                     mPresenter.requestStoreAd((userInfo as LoginByPasswordApiBean).resultData?.id!!, advertisementId!!)
                 }
+
+                REQ_GET_COINS_CODE ->{
+                    mPresenter.requestIsReceived(context, userInfo?.resultData?.id, advertisementId.toString(), advertisementCoins,fragmentManager) {}
+                }
             }
         }
     }
@@ -173,6 +184,15 @@ class DetailsFragment : BaseFragment(), View.OnClickListener, DetailsContract.Vi
             DetailsApi.requestGetContentById -> {
                 val detailsBean = obj as DetailsApiBean
                 tv_app_name.text = detailsBean.appname
+                iv_down_load.setOnClickListener {
+                    val intent = Intent(context, BasicWebActivity::class.java)
+                    intent.putExtra(BasicWebActivity.LoadURL, detailsBean.appaddr)
+                    intent.putExtra(BasicWebActivity.AdvertisementId, detailsBean.id)
+
+                    context.startActivity(intent)
+                    (context as BaseActivity).overridePendingTransition(R.anim.activity_slide_enter_left, R.anim.activity_slide_enter_left)
+
+                }
                 detailsAdapter?.addAll(mPresenter.parseAdData(detailsBean))
 
                 if (detailsBean.storestatus == "0") {
@@ -185,6 +205,13 @@ class DetailsFragment : BaseFragment(), View.OnClickListener, DetailsContract.Vi
                     mPresenter.requestViewEvent(context, userInfo?.resultData?.id.toString(), advertisementId!!, detailsBean.adsc)
                 }
 
+                if (detailsBean.gold > 0) {
+                    mPresenter.requestIsReceived(context, userInfo?.resultData?.id, advertisementId.toString(),detailsBean.gold, fragmentManager) {
+                        startForResult(LoginByPasswordFragment.getInstance(""), REQ_GET_COINS_CODE)
+                    }
+                }
+
+                advertisementCoins = detailsBean.gold
                 collectionStars = detailsBean.storenum
                 collectionStatus = detailsBean.storestatus.toString()
             }

@@ -1,6 +1,7 @@
 package com.advertisement.cashcow.module.main.detail
 
 import android.content.Context
+import android.support.v4.app.FragmentManager
 import com.advertisement.cashcow.common.base.IBaseView
 import com.advertisement.cashcow.common.base.IPresenter
 import com.advertisement.cashcow.common.network.bean.DetailsApiBean
@@ -75,5 +76,23 @@ interface DetailsContract {
          * @param  adid(广告id)
          */
         fun requestAddwxEvent(context: Context,userId: String, adId: String)
+
+        /**
+         * 红包(金币)是否已领取
+         * @param userid(用户id)
+         * @param  adid(广告id)
+         */
+        fun requestIsReceived(context: Context, userId: String?, advertisementId: String,coins:Int,
+                              manager: FragmentManager, loginCallback: () -> Unit)
+
+        /**
+         * 领取(金币)红包
+         * @param userid(用户id)
+         * @param  adid(广告id)
+         */
+        fun requestReceiveRedPckt(context: Context, userId: String, adId: String,
+                                  manager: FragmentManager)
+
+
     }
 }

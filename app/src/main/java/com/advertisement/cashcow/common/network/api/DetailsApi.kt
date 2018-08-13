@@ -18,6 +18,8 @@ interface DetailsApi {
         val requestCancelStore = "requestCancelStore"
         val requestViewEvent = "requestViewEvent"
         val requestAddwxEvent = "requestAddwxEvent"
+        val requestIsReceived = "requestIsReceived"
+        val requestReceiveRedPckt = "requestReceiveRedPckt"
 
 
     }
@@ -61,5 +63,22 @@ interface DetailsApi {
      */
     @GET("uop/addwxEvent.do")
     fun requestAddwxEvent(@QueryMap maps: Map<String, String>): Observable<TextApiBean>
+
+    /**
+     * 红包(金币)是否已领取
+     * @param userid(用户id)
+     * @param  adid(广告id)
+     */
+    @GET("uop/isReceived.do")
+    fun requestIsReceived(@QueryMap maps: Map<String, String>): Observable<TextApiBean>
+
+    /**
+     * 领取(金币)红包
+     * @param userid(用户id)
+     * @param  adid(广告id)
+     */
+    @GET("uop/receiveRedPckt.do")
+    fun requestReceiveRedPckt(@QueryMap maps: Map<String, String>): Observable<TextApiBean>
+
 
 }

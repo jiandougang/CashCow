@@ -45,6 +45,7 @@ open class InformationFragment : BaseFragment(), InformationContract.View, OnIte
     override fun lazyLoad() {
         mPresenter = InformationPresenter(InformationFragment.javaClass.name)
         mPresenter!!.attachView(this)
+        mPresenter!!.requestGetLastedVersion(context)
         arrayData = mPresenter!!.initAllData(context!!, currentPage.toString(), title)
 
         normalBroadcastReceiver = NormalBroadcastReceiver(object : NormalBroadcastReceiver.ReceiverCallBack {
@@ -175,25 +176,29 @@ open class InformationFragment : BaseFragment(), InformationContract.View, OnIte
                         },
                         obj.advertisementTypeSinglePicEntity?.linkUrl!!,
                         obj.advertisementTypeSinglePicEntity?.id!!,
-                        obj.advertisementTypeSinglePicEntity?.adsc!!)
+                        obj.advertisementTypeSinglePicEntity?.adsc!!,
+                        obj.advertisementTypeSinglePicEntity?.gold!!)
             }
             InformationBean.advTypeMulPic ->
                 startNextPage({ startDetailsFragment(obj.advertisementTypeMultiPicEntity?.id.toString(), InformationBean.advTypeMulPic) },
                         obj.advertisementTypeMultiPicEntity?.linkUrl,
                         obj.advertisementTypeMultiPicEntity?.id!!,
-                        obj.advertisementTypeMultiPicEntity?.adsc!!)
+                        obj.advertisementTypeMultiPicEntity?.adsc!!,
+                        obj.advertisementTypeMultiPicEntity?.gold!!)
 
             InformationBean.appWithPicType ->
                 startNextPage({ startDetailsFragment(obj.appEntity?.id.toString(), InformationBean.appWithPicType) },
                         obj.appEntity?.linkUrl!!,
                         obj.appEntity?.id!!,
-                        obj.appEntity?.adsc!!)
+                        obj.appEntity?.adsc!!,
+                        obj.appEntity?.gold!!)
 
             InformationBean.videoType,
             InformationBean.appWithVideoType -> {
                 startNextPage({ startVideoActivity(obj) }, obj.appEntity?.linkUrl!!,
                         obj.appEntity?.id!!,
-                        obj.appEntity?.adsc!!)
+                        obj.appEntity?.adsc!!,
+                        obj.appEntity?.gold!!)
 
             }
 
@@ -203,7 +208,7 @@ open class InformationFragment : BaseFragment(), InformationContract.View, OnIte
     }
 
 
-    protected open fun startNextPage(callBack: () -> Unit, linkUrl: String?, adId: String, adsc: Int) {
+    protected open fun startNextPage(callBack: () -> Unit, linkUrl: String?, adId: String, adsc: Int,gold:Int) {
         if (CacheConfigUtils.parseUserInfo(context!!).resultData != null) {
             mPresenter!!.requestClickEvent(context, CacheConfigUtils.parseUserInfo(context!!).resultData?.id.toString(), adId)
         }
@@ -215,6 +220,7 @@ open class InformationFragment : BaseFragment(), InformationContract.View, OnIte
             intent.putExtra(BasicWebActivity.LoadURL, linkUrl)
             intent.putExtra(BasicWebActivity.AdvertisementId, adId)
             intent.putExtra(BasicWebActivity.AdvertisementDuration, adsc)
+            intent.putExtra(BasicWebActivity.AdvertisementCoins, gold)
 
 
             activity!!.startActivity(intent)
@@ -287,6 +293,10 @@ open class InformationFragment : BaseFragment(), InformationContract.View, OnIte
                 obj as StatisticsUnreadMessageApiBean
                 tv_statistics.visibility = View.VISIBLE
                 tv_statistics.text = obj.resultData.toString()
+            }
+
+            InformationApi.requestGetLastedVersion ->{
+
             }
         }
     }

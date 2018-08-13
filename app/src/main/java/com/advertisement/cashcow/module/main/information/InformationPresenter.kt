@@ -28,10 +28,45 @@ import kotlin.collections.ArrayList
  */
 open class InformationPresenter(type: String) : BasePresenter<InformationContract.View>(), InformationContract.Presenter {
 
+
     var type: String? = null
 
     init {
         this.type = type
+    }
+
+
+    override fun dowonLoadLatestVersion() {
+
+    }
+
+    override fun requestGetLastedVersion(context: Context) {
+        val parameters: MutableMap<String, String> = HashMap()
+
+        mRootView as InformationFragment
+
+        val novate = NetworkConfig.getInstance(context)
+
+        val api = novate.create(InformationApi::class.java)
+
+        novate.call(api.requestGetLastedVersion(parameters), object : BaseSubscriber<AppVersionUpdateApiBean>(context) {
+            override fun onError(e: Throwable?) {
+                LogUtils.e(e.toString())
+                mRootView!!.handleError(InformationApi.requestGetLastedVersion, e.toString())
+            }
+
+            override fun onStart() {
+
+            }
+
+            override fun onNext(t: AppVersionUpdateApiBean) {
+                LogUtils.d(t.toString())
+                mRootView!!.handleSuccess(InformationApi.requestGetLastedVersion, t)
+            }
+
+            override fun onCompleted() {
+            }
+        })
     }
 
     override fun requestClickEvent(context: Context, userId: String, adId: String) {
@@ -241,7 +276,7 @@ open class InformationPresenter(type: String) : BasePresenter<InformationContrac
                         val videoEntity = InformationBean.VideoEntity(item.id,
                                 item.title, LocalCommonUtils.encodePathWithUtf8(thumbPic),
                                 item.company, LocalCommonUtils.getTimeFormatText(TimeUtils.string2Date(item.addedtime)),
-                                item.linkaddr, item.appaddr,item.adsc)
+                                item.linkaddr, item.appaddr, item.adsc,item.gold)
                         informationBean.appEntity = videoEntity
                     }
 
@@ -253,7 +288,7 @@ open class InformationPresenter(type: String) : BasePresenter<InformationContrac
                             val appEntity = InformationBean.VideoEntity(item.id,
                                     item.title, LocalCommonUtils.encodePathWithUtf8(item.filesrc),
                                     item.company, item.addedtime,
-                                    item.linkaddr, item.appaddr,item.adsc)
+                                    item.linkaddr, item.appaddr, item.adsc,item.gold)
                             informationBean.appEntity = appEntity
 
                         } else {
@@ -261,7 +296,8 @@ open class InformationPresenter(type: String) : BasePresenter<InformationContrac
                             informationBean = InformationBean(InformationBean.advTypeSinglePic)
                             val advertisementSinglePicEntity = InformationBean.AdvertisementSinglePicEntity(item.id,
                                     item.title, item.company, LocalCommonUtils.getTimeFormatText(TimeUtils.string2Date(item.addedtime)),
-                                    LocalCommonUtils.encodePathWithUtf8(item.filesrc), item.linkaddr,item.adsc)
+                                    LocalCommonUtils.encodePathWithUtf8(item.filesrc), item.linkaddr,
+                                    item.adsc,item.gold)
                             informationBean.advertisementTypeSinglePicEntity = advertisementSinglePicEntity
 
                         }
@@ -277,7 +313,7 @@ open class InformationPresenter(type: String) : BasePresenter<InformationContrac
                         informationBean = InformationBean(InformationBean.advTypeMulPic)
                         val advertisementMultiPicEntity = InformationBean.AdvertisementMultiPicEntity(
                                 item.id, item.title, item.company, LocalCommonUtils.getTimeFormatText(TimeUtils.string2Date(item.addedtime)),
-                                fileSrcArray, item.linkaddr,item.adsc)
+                                fileSrcArray, item.linkaddr, item.adsc,item.gold)
                         informationBean.advertisementTypeMultiPicEntity = advertisementMultiPicEntity
                     }
 

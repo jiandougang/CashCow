@@ -7,6 +7,7 @@ import com.advertisement.cashcow.module.main.detail.DetailsFragment
 import com.advertisement.cashcow.module.main.information.messagesCenter.MessagesCenterFragment
 import com.advertisement.cashcow.module.main.information.subInformation.SubInformationFragment
 import com.advertisement.cashcow.module.main.mine.cumulativeIncome.CumulativeIncomeFragment
+import com.advertisement.cashcow.module.main.mine.goldCoinsDetail.GoldCoinsDetailFragment
 import com.advertisement.cashcow.module.main.mine.myBankCard.MyBankCardsFragment
 import com.advertisement.cashcow.module.main.mine.myCollection.MyCollectionFragment
 import com.advertisement.cashcow.module.main.mine.other.CustomerServiceFragment
@@ -101,6 +102,9 @@ class EmptyActivity : BaseActivity() {
                 supportFragment = MessagesCenterFragment.getInstance(getString(R.string.messages_center))
             }
 
+            GoldCoinsDetailFragment.javaClass.name ->{
+                supportFragment = GoldCoinsDetailFragment.getInstance()
+            }
         }
     }
 

@@ -5,6 +5,7 @@ import android.support.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.blankj.utilcode.util.LogUtils
 import me.yokeyword.fragmentation.SupportFragment
 
 
@@ -34,6 +35,7 @@ import me.yokeyword.fragmentation.SupportFragment
         if (isVisibleToUser) {
             lazyLoadDataIfPrepared()
         }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,6 +43,7 @@ import me.yokeyword.fragmentation.SupportFragment
         isViewPrepare = true
         lazyLoadDataIfPrepared()
         initView()
+
     }
 
     override fun onBackPressedSupport(): Boolean {

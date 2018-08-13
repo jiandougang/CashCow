@@ -1,6 +1,10 @@
 package com.advertisement.cashcow.module.main.detail
 
 import android.content.Context
+import android.support.v4.app.FragmentManager
+import android.text.TextUtils
+import android.widget.TextView
+import com.advertisement.cashcow.R
 import com.advertisement.cashcow.common.base.BasePresenter
 import com.advertisement.cashcow.common.network.NetworkConfig
 import com.advertisement.cashcow.common.network.api.DetailsApi
@@ -12,6 +16,10 @@ import com.advertisement.cashcow.util.LocalCommonUtils
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.StringUtils
 import com.blankj.utilcode.util.TimeUtils
+import com.othershe.nicedialog.BaseNiceDialog
+import com.othershe.nicedialog.NiceDialog
+import com.othershe.nicedialog.ViewConvertListener
+import com.othershe.nicedialog.ViewHolder
 import com.tamic.novate.BaseSubscriber
 import com.tamic.novate.Throwable
 import rx.Observable
@@ -26,11 +34,143 @@ import kotlin.collections.set
  */
 class DetailsPresenter(type: String) : BasePresenter<DetailsContract.View>(), DetailsContract.Presenter {
 
-
     var type: String? = null
 
     init {
         this.type = type
+    }
+
+    override fun requestReceiveRedPckt(context: Context, userId: String, adId: String,
+                                       manager: FragmentManager) {
+        val parameters: MutableMap<String, String> = HashMap()
+
+        parameters["adid"] = adId
+        parameters["userid"] = userId
+
+        when (type) {
+            BasicWebActivity.javaClass.name ->
+                mRootView as BasicWebActivity
+
+            VideoDetailActivity.javaClass.name ->
+                mRootView as VideoDetailActivity
+            else ->
+                mRootView as DetailsFragment
+        }
+
+        val novate = NetworkConfig.getInstance(context!!)
+
+        val api = novate.create(DetailsApi::class.java)
+
+        novate.call(api.requestReceiveRedPckt(parameters), object : BaseSubscriber<TextApiBean>(context) {
+            override fun onError(e: Throwable?) {
+                LogUtils.e(e.toString())
+                mRootView!!.handleError(DetailsApi.requestReceiveRedPckt, e.toString())
+            }
+
+            override fun onStart() {
+
+            }
+
+            override fun onNext(t: TextApiBean) {
+                LogUtils.d(t.toString())
+                if (t.resultCode == "0") {
+                    NiceDialog.init()
+                            .setLayoutId(R.layout.dialog_get_coin_success)
+                            .setConvertListener(object : ViewConvertListener() {
+                                public override fun convertView(holder: ViewHolder, dialog: BaseNiceDialog) {
+                                    holder.setOnClickListener(R.id.iv_delete) {
+                                        dialog.dismiss()
+                                    }
+                                }
+                            })
+                            .setMargin(68)
+                            .show(manager)
+                } else {
+                    mRootView!!.handleError(DetailsApi.requestReceiveRedPckt, t.resultMsg.toString())
+
+                }
+            }
+
+            override fun onCompleted() {
+            }
+        })
+    }
+
+
+    override fun requestIsReceived(context: Context, userId: String?, advertisementId: String,coins:Int,
+                                   manager: FragmentManager, loginCallback: () -> Unit) {
+        //未登录
+        if (StringUtils.isEmpty(userId)) {
+            NiceDialog.init()
+                    .setLayoutId(R.layout.dialog_reward_tips)
+                    .setConvertListener(object : ViewConvertListener() {
+                        public override fun convertView(holder: ViewHolder, dialog: BaseNiceDialog) {
+                            holder.setOnClickListener(R.id.tv_get_coins) {
+                                loginCallback()
+                                dialog.dismiss()
+                            }
+
+                            holder.getView<TextView>(R.id.tv_coins).text = coins.toString()
+                        }
+                    })
+                    .setHeight(270)
+                    .setMargin(68)
+                    .show(manager)
+            return
+        }
+
+
+        val parameters: MutableMap<String, String> = HashMap()
+
+        parameters["adid"] = advertisementId
+        parameters["userid"] = userId!!
+
+        when (type) {
+            BasicWebActivity.javaClass.name ->
+                mRootView as BasicWebActivity
+
+            VideoDetailActivity.javaClass.name ->
+                mRootView as VideoDetailActivity
+            else ->
+                mRootView as DetailsFragment
+        }
+
+        val novate = NetworkConfig.getInstance(context!!)
+
+        val api = novate.create(DetailsApi::class.java)
+
+        novate.call(api.requestIsReceived(parameters), object : BaseSubscriber<TextApiBean>(context) {
+            override fun onError(e: Throwable?) {
+                LogUtils.e(e.toString())
+                mRootView!!.handleError(DetailsApi.requestIsReceived, e.toString())
+            }
+
+            override fun onStart() {
+
+            }
+
+            override fun onNext(t: TextApiBean) {
+                LogUtils.d(t.toString())
+                if (t.resultCode == "0") {
+                    NiceDialog.init()
+                            .setLayoutId(R.layout.dialog_reward_tips)
+                            .setConvertListener(object : ViewConvertListener() {
+                                public override fun convertView(holder: ViewHolder, dialog: BaseNiceDialog) {
+                                    holder.setOnClickListener(R.id.tv_get_coins) {
+                                        requestReceiveRedPckt(context,userId.toString(),advertisementId,manager)
+                                        dialog.dismiss()
+                                    }
+                                }
+                            })
+                            .setHeight(270)
+                            .setMargin(68)
+                            .show(manager)
+                }
+            }
+
+            override fun onCompleted() {
+            }
+        })
     }
 
 

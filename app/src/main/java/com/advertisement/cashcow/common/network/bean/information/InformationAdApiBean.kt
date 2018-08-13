@@ -35,8 +35,10 @@ class InformationAdApiBean : BaseApiBean() {
          * title : 祛斑精华液
          * addedtime : 2018-06-26 16:51:38
          * adsc : 广告时长
+         * gold: 20,
          */
 
+        var gold: Int = 0
         var appaddr: String? = null
         var filesrc: String? = null
         var linkaddr: String? = null

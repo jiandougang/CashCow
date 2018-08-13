@@ -2,6 +2,7 @@ package com.advertisement.cashcow.common.network.api
 
 import com.advertisement.cashcow.common.network.bean.TextApiBean
 import com.advertisement.cashcow.common.network.bean.information.*
+import com.advertisement.cashcow.module.main.information.AppVersionUpdateApiBean
 import retrofit2.http.GET
 import retrofit2.http.QueryMap
 import rx.Observable
@@ -21,6 +22,7 @@ interface InformationApi {
         val requestReadedNews = "requestReadedNews"
         val requestStatisUnreadNews = "requestStatisUnreadNews"
         val requestClickEvent = "requestClickEvent"
+        val requestGetLastedVersion = "requestGetLastedVersion"
 
 
         /**每一页展示多少条数据 */
@@ -92,5 +94,13 @@ interface InformationApi {
      */
     @GET("uop/clickEvent.do")
     fun requestClickEvent(@QueryMap maps: Map<String, String>): Observable<TextApiBean>
+
+
+    /**
+     * 安卓app版本更新
+     *
+    */
+    @GET("version/getLastedVersion.do")
+    fun requestGetLastedVersion(@QueryMap maps: Map<String, String>): Observable<AppVersionUpdateApiBean>
 
 }

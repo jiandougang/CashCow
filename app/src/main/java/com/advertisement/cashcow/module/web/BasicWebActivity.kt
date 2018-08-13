@@ -1,6 +1,8 @@
 package com.advertisement.cashcow.module.web
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.net.http.SslError
 import android.view.View
@@ -10,12 +12,20 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.advertisement.cashcow.R
 import com.advertisement.cashcow.common.base.BaseActivity
+import com.advertisement.cashcow.common.broadcast.NormalBroadcastReceiver
+import com.advertisement.cashcow.common.manager.EmptyActivity
+import com.advertisement.cashcow.common.network.api.DetailsApi
 import com.advertisement.cashcow.common.network.bean.LoginByPasswordApiBean
+import com.advertisement.cashcow.module.login.password.LoginByPasswordFragment
 import com.advertisement.cashcow.module.main.detail.DetailsContract
 import com.advertisement.cashcow.module.main.detail.DetailsPresenter
+import com.advertisement.cashcow.module.video.VideoDetailActivity
 import com.advertisement.cashcow.util.CacheConfigUtils
 import com.blankj.utilcode.util.NetworkUtils
+import com.blankj.utilcode.util.ToastUtils
 import kotlinx.android.synthetic.main.activity_webview.*
+import kotlinx.android.synthetic.main.fragment_information.*
+import me.yokeyword.fragmentation.SupportFragment
 
 /**
  * 作者：吴国洪 on 2018/6/15
@@ -26,20 +36,48 @@ class BasicWebActivity : BaseActivity(), DetailsContract.View {
     private var userInfo: LoginByPasswordApiBean? = null
 
     private val mPresenter by lazy { DetailsPresenter(BasicWebActivity.javaClass.name) }
+    private var normalBroadcastReceiver: NormalBroadcastReceiver? = null
 
     private var isContinue = false
     private var url: String = ""
     private var advertisementId: String = ""
-    private var advertisementDuration:Int = 0
+    private var advertisementDuration: Int = 0
+    private var advertisementCoins: Int = 0
+
 
     override fun initData() {
         mPresenter.attachView(this)
         url = intent.getStringExtra(LoadURL)
         advertisementId = intent.getStringExtra(AdvertisementId)
-        advertisementDuration = intent.getIntExtra(AdvertisementDuration,0)
+        advertisementDuration = intent.getIntExtra(AdvertisementDuration, 0)
+        advertisementCoins = intent.getIntExtra(AdvertisementCoins, 0)
+
 
         userInfo = CacheConfigUtils.parseUserInfo(this)
 
+        if (advertisementCoins > 0) {
+            mPresenter.requestIsReceived(this@BasicWebActivity, userInfo?.resultData?.id, advertisementId, advertisementCoins,supportFragmentManager) {
+                val intent = Intent(this, EmptyActivity::class.java)
+                intent.putExtra(EmptyActivity.Activity_Key, LoginByPasswordFragment.javaClass.name)
+                intent.putExtra(LoginByPasswordFragment.Finish_Activity_For_Result, LoginByPasswordFragment.Finish_Activity_For_Result)
+
+                startActivity(intent)
+                overridePendingTransition(R.anim.activity_slide_enter_left, R.anim.activity_slide_enter_left)
+            }
+        }
+
+        normalBroadcastReceiver = NormalBroadcastReceiver(object : NormalBroadcastReceiver.ReceiverCallBack {
+            override fun callBack(intent: Intent) {
+                userInfo = CacheConfigUtils.parseUserInfo(this@BasicWebActivity)
+                mPresenter.requestIsReceived(this@BasicWebActivity, userInfo?.resultData?.id,
+                        advertisementId, advertisementCoins,supportFragmentManager) {
+                }
+            }
+        })
+
+        val filter = IntentFilter()
+        filter.addAction(NormalBroadcastReceiver.BroadcastName)
+        registerReceiver(normalBroadcastReceiver, filter)
     }
 
     /**
@@ -175,6 +213,7 @@ class BasicWebActivity : BaseActivity(), DetailsContract.View {
     }
 
     override fun handleSuccess(type: String, obj: Any) {
+
     }
 
 
@@ -187,11 +226,24 @@ class BasicWebActivity : BaseActivity(), DetailsContract.View {
 
 
     override fun handleError(type: String, obj: Any) {
+        when (type) {
+            DetailsApi.requestReceiveRedPckt -> {
+                ToastUtils.showShort(obj.toString())
+            }
+        }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        if (normalBroadcastReceiver != null) {
+            unregisterReceiver(normalBroadcastReceiver)
+            normalBroadcastReceiver = null
+        }
+    }
     companion object {
         const val LoadURL = "LoadURL"
         const val AdvertisementId = "AdvertisementId"
         const val AdvertisementDuration = "AdvertisementDuration"
+        const val AdvertisementCoins = "AdvertisementCoins"
     }
 }

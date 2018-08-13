@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 27
@@ -68,6 +69,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     //网络框架
+    implementation 'com.tamic.fastdownloader:Android-FastDownloader:1.0.3'
     implementation 'com.tamic.novate:novate:1.5.3'
     //kotlin 支持库
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -105,6 +107,15 @@ dependencies {
     implementation rootProject.ext.fragmentationLibs
     // RxJava2
     implementation rootProject.ext.rxJavaLibs
+
+    implementation 'org.greenrobot:greendao:3.2.2'
+    /*rx-android-java*/
+    implementation 'com.trello:rxlifecycle:1.0'
+    implementation 'com.trello:rxlifecycle-components:1.0'
+
+    implementation 'com.jude:easyrecyclerview:4.2.6'
+    implementation 'com.daimajia.numberprogressbar:library:1.2@aar'
+
     //    implementation rootProject.ext.ijkPlayers
     //    implementation 'com.android.support:exifinterface:28.0.0-alpha3'
 }
